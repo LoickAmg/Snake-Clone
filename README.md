@@ -1,8 +1,6 @@
 # Snake Clone
 
-Projet 14 de la roadmap "40 projets" — Niveau 1 (Fondamentaux, Scripts & Logique de base).
-
-Un clone de Snake en Python/Pygame, avec une logique de jeu séparée du rendu (facile à tester unitairement) et une CI GitHub Actions qui lint + teste à chaque push.
+Un clone de Snake en Python/Pygame, axé sur les fondamentaux et la logique de base : boucle de jeu, gestion d'état, logique séparée du rendu (facile à tester unitairement), et une CI GitHub Actions qui lint + teste à chaque push.
 
 ## Fonctionnalités
 
