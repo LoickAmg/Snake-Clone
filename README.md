@@ -64,6 +64,8 @@ ruff check .
 ## Prochaines étapes possibles
 
 - Ajouter un mode "murs traversants" (le serpent réapparaît de l'autre côté)
-- Sauvegarder le meilleur score localement
 - Conteneuriser avec Docker (voir le projet transversal #25 de la roadmap)
-# Snake-Clone
+
+## Amélioration : meilleur score local
+
+Le meilleur score est sauvegardé dans `~/.snake-clone/high-score.json` avec une écriture temporaire puis un remplacement atomique. Le fichier est local à l’utilisateur, ne contient aucune donnée personnelle de jeu et une corruption ou une absence de droits d’écriture ne bloque pas le lancement : le jeu repart simplement avec un record à zéro. Cette logique est isolée dans `src/high_score.py` et couverte par des tests indépendants de Pygame.

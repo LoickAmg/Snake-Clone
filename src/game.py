@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import sys
+from pathlib import Path
 
 import pygame
 
 from .food import Food
+from .high_score import HighScoreStore
 from .settings import (
     CELL_SIZE,
     COLOR_BG,
@@ -45,6 +47,8 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(FONT_NAME, 24)
+        self.high_score_store = HighScoreStore(Path.home() / ".snake-clone" / "high-score.json")
+        self.best_score = self.high_score_store.load()
         self.reset()
 
     def reset(self) -> None:
@@ -76,11 +80,13 @@ class Game:
 
         if self.snake.is_dead():
             self.game_over = True
+            self.best_score = self.high_score_store.save_if_new_record(self.score)
             return
 
         if self.snake.head == self.food.position:
             self.snake.grow(1)
             self.score += 1
+            self.best_score = self.high_score_store.save_if_new_record(self.score)
             self.food.respawn(self.snake)
 
     def current_fps(self) -> int:
@@ -108,7 +114,9 @@ class Game:
                 self.screen, color, (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             )
 
-        score_surface = self.font.render(f"Score: {self.score}", True, COLOR_TEXT)
+        score_surface = self.font.render(
+            f"Score: {self.score}   Best: {self.best_score}", True, COLOR_TEXT
+        )
         self.screen.blit(score_surface, (8, 8))
 
         if self.game_over:
